@@ -16,6 +16,7 @@ def segmentDice(image):
     return thresh
 
 def extractDices(segmentedImage, image):
+    copy = image.copy()
     contours, hierarchy = cv.findContours(segmentedImage, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
     rects = []
     for cnt in contours:
@@ -26,8 +27,8 @@ def extractDices(segmentedImage, image):
         rects.append(rect)
         box = cv.boxPoints(rect)
         box = np.int0(box)
-        cv.drawContours(image, [box], 0, (0, 0, 255), 2)
-    return image, rects
+        cv.drawContours(copy, [box], 0, (0, 0, 255), 2)
+    return copy, rects
 
 for i in range(0, 2):
     file = random.choice(os.listdir(path))
