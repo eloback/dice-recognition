@@ -1,3 +1,8 @@
+# Authors:
+#   - Eduardo Loback Stefani
+#   - Enzo Redivo Canella
+#   - Khalil Santana
+
 import cv2 as cv
 import numpy as np
 import os, random    
