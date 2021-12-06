@@ -12,7 +12,7 @@ path = "./dataset/"
 #given a image, return all countours.
 def getCountours(image):
     gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-    rect, thresh = cv.threshold(gray, 125, 255, cv.THRESH_BINARY)
+    rect, thresh = cv.threshold(gray, 50, 255, cv.THRESH_BINARY)
     #cv.bitwise_not(thresh, thresh)
     #thresh = cv.erode(thresh, (5, 5) iterations=6)
     contours, hierarchy = cv.findContours(thresh, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
