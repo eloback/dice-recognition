@@ -92,14 +92,10 @@ for i in range(0, 2):
     for j in range(0, len(diceImages)):
         dieContours, dieHierarchy = getContoursDie(diceImages[j])
         dieNumber = getDieNumber(dieContours, dieHierarchy)
-        cv.imshow("Dice "+str(j)+" "+file, diceImages[j])
-        #create a blank image with the same size of the dice
-        blankImg = np.zeros((diceImages[j].shape[0], diceImages[j].shape[1], 3), np.uint8)
-        #Show the number of the dice in the blank image
-        cv.putText(blankImg, str(len(dieNumber)), (5, diceImages[j].shape[0]-5), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-        cv.imshow("DiceNumber "+str(j)+" "+file, blankImg)
-        cv.moveWindow("Dice "+str(j)+" "+file, img.shape[1]*2+1+(33*j), img.shape[0]*i+1)
-        cv.moveWindow("DiceNumber "+str(j)+" "+file, img.shape[1]*2+1+(33*j), img.shape[0]*i+64)
+        dieImage = cv.copyMakeBorder(diceImages[j], 0, 0, 0, 30, cv.BORDER_CONSTANT, value=[0, 0, 0])
+        cv.putText(dieImage, str(len(dieNumber)), (diceImages[j].shape[1]+5, diceImages[j].shape[0]-5), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+        cv.imshow("Dice "+str(j)+" "+file, dieImage)
+        cv.moveWindow("Dice "+str(j)+" "+file, img.shape[1]*2+1+(66*j), img.shape[0]*i+1)
 
 
     
