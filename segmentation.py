@@ -19,12 +19,12 @@ def getCountours(image):
     return contours, hierarchy
 
 #alternative way of getting countours
-def getCountoursUsingCanny(image):
-    rect, thresh = cv.threshold(image, 125, 255, cv.THRESH_BINARY, image)
-    gray = cv.cvtColor(thresh, cv.COLOR_BGR2GRAY)
-    edges = cv.Canny(gray, 50, 150, apertureSize=3)
-    contours, hierarchy = cv.findContours(edges, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
-    return contours, hierarchy
+# def getCountoursUsingCanny(image):
+#     rect, thresh = cv.threshold(image, 125, 255, cv.THRESH_BINARY, image)
+#     gray = cv.cvtColor(thresh, cv.COLOR_BGR2GRAY)
+#     edges = cv.Canny(gray, 50, 150, apertureSize=3)
+#     contours, hierarchy = cv.findContours(edges, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+#     return contours, hierarchy
 
 #return the original image with the dices segmented and the list of dices.
 def segmentDices(contours):
@@ -48,7 +48,7 @@ def extractDieImage(rect, image):
     cropped = cv.getRectSubPix(rotated, (int(w), int(h)), rect[0])
     return cropped
 
-#recents the image of a die, returning its contours and hierarchy.
+#receive a image of a die, and return its contours and hierarchy.
 def getContoursDie(dieImage):
     gray = cv.cvtColor(dieImage, cv.COLOR_BGR2GRAY)
     rect, thresh = cv.threshold(gray, 125, 255, cv.THRESH_BINARY)
@@ -80,7 +80,6 @@ for i in range(0, 2):
     for die in dices:
         diceImages.append(extractDieImage(die, img))
         dieImg = extractDieImage(die, img)
-
     #Show the Original image
     cv.imshow("Original "+file, img)
     cv.moveWindow("Original "+file, 1, img.shape[0]*i+1)
@@ -91,14 +90,16 @@ for i in range(0, 2):
     print("number of dices in "+file + " is " + str(len(dices)))
     #show dices
     for j in range(0, len(diceImages)):
-        cv.imshow("Dice "+str(j)+" "+file, diceImages[j])
         dieContours, dieHierarchy = getContoursDie(diceImages[j])
         dieNumber = getDieNumber(dieContours, dieHierarchy)
-        print("Dice "+str(j)+" has the number "+str(len(dieNumber)))
-        cv.imshow("DiceContours "+str(j)+" "+file, cv.drawContours(diceImages[j], dieContours, -1, (0, 255, 0), 3))
-        #write dice number
+        cv.imshow("Dice "+str(j)+" "+file, diceImages[j])
+        #create a blank image with the same size of the dice
+        blankImg = np.zeros((diceImages[j].shape[0], diceImages[j].shape[1], 3), np.uint8)
+        #Show the number of the dice in the blank image
+        cv.putText(blankImg, str(len(dieNumber)), (5, diceImages[j].shape[0]-5), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        cv.imshow("DiceNumber "+str(j)+" "+file, blankImg)
         cv.moveWindow("Dice "+str(j)+" "+file, img.shape[1]*2+1+(33*j), img.shape[0]*i+1)
-        cv.moveWindow("DiceContours "+str(j)+" "+file, img.shape[1]*2+1+(33*j), img.shape[0]*i+64)
+        cv.moveWindow("DiceNumber "+str(j)+" "+file, img.shape[1]*2+1+(33*j), img.shape[0]*i+64)
 
 
     
