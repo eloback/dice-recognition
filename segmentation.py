@@ -92,7 +92,8 @@ for i in range(0, 2):
     #show dices
     for j in range(0, len(diceImages)):
         cv.imshow("Dice "+str(j)+" "+file, diceImages[j])
-        dieContours, dieHierarchy = getContoursDie(diceImages[j])
+        kernel = np.ones((3,3), np.uint8)
+        dieContours, dieHierarchy = getContoursDie(cv.dilate(diceImages[j], kernel, iterations=1))
         dieNumber = getDieNumber(dieContours, dieHierarchy)
         print("Dice "+str(j)+" has the number "+str(len(dieNumber)))
         cv.imshow("DiceContours "+str(j)+" "+file, cv.drawContours(diceImages[j], dieContours, -1, (0, 255, 0), 3))
